@@ -1,9 +1,5 @@
 import { Flex } from "@chakra-ui/react";
-import {
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+import { flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import React from "react";
 import { defaultColumns, makeData } from "./../utils";
 import { ResizeHandle } from "./resize-handle";
@@ -34,11 +30,9 @@ export const DataTable = () => {
 
     for (let i = 0; i < headers.length; i++) {
       cssVars[`--header-${headers[i].id}-width`] = headers[i].getSize();
-      cssVars[`--col-${headers[i].column.id}-width`] =
-        headers[i].column.getSize();
+      cssVars[`--col-${headers[i].column.id}-width`] = headers[i].column.getSize();
       cssVars[`--root-width`] =
-        (cssVars[`--root-width`] ?? 0) +
-        cssVars[`--col-${headers[i].column.id}-width`];
+        (cssVars[`--root-width`] ?? 0) + cssVars[`--col-${headers[i].column.id}-width`];
     }
 
     return cssVars;
@@ -67,10 +61,7 @@ export const DataTable = () => {
                 {headerGroup.headers.map((header) => (
                   <TableHeader key={header.id} header={header}>
                     {!header.isPlaceholder &&
-                      flexRender(
-                        header.column.columnDef.header,
-                        header.getContext(),
-                      )}
+                      flexRender(header.column.columnDef.header, header.getContext())}
                     <ResizeHandle
                       onResize={header.getResizeHandler()}
                       onResetSize={header.column.resetSize}

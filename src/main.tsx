@@ -10,13 +10,7 @@ import { DataTable } from "./components/data-table";
 const App = () => {
   return (
     <Box position="relative" width="100%">
-      <Box
-        position="relative"
-        maxW={900}
-        width="100%"
-        mx="auto"
-        overflow="hidden"
-      >
+      <Box position="relative" maxW={900} width="100%" mx="auto" overflow="hidden">
         <DataTable />
       </Box>
     </Box>
