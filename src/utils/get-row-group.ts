@@ -1,5 +1,9 @@
-import { Row, RowData } from "@tanstack/react-table";
+import type { Row, RowData } from "@tanstack/react-table";
 import type { TableGroup } from "./../types";
+
+//
+// ─── Functions ──────────────────────────────────────────────────────────────────
+//
 
 export const getRowGroup = <TData extends RowData>(
   row: Row<TData>,

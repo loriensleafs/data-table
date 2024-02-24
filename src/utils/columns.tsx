@@ -1,4 +1,4 @@
-import { ColumnDef } from "@tanstack/react-table";
+import type { ColumnDef } from "@tanstack/react-table";
 import type { Person } from "./data";
 
 //
@@ -11,12 +11,15 @@ export const defaultColumns: ColumnDef<Person>[] = [
     columns: [
       {
         accessorKey: "firstName",
+        header: "First Name",
         cell: (info) => info.getValue(),
         footer: (props) => props.column.id,
+        minSize: 156,
+        maxSize: 250,
       },
       {
         accessorFn: (row) => row.lastName,
-        header: () => <span>Last Name</span>,
+        header: "Last Name",
         cell: (info) => info.getValue(),
         footer: (props) => props.column.id,
         id: "lastName",

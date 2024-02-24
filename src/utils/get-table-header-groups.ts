@@ -1,5 +1,9 @@
-import { HeaderGroup, RowData, Table } from "@tanstack/react-table";
+import type { HeaderGroup, RowData, Table } from "@tanstack/react-table";
 import type { TableGroup } from "./../types";
+
+//
+// ─── Functions ──────────────────────────────────────────────────────────────────
+//
 
 export const getTableHeaderGroups = <TData extends RowData>(
   table: Table<TData>,
