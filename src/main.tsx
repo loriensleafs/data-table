@@ -25,8 +25,6 @@ const App = () => {
                   {
                     accessorKey: "firstName",
                     header: "First Name",
-                    minSize: 156,
-                    maxSize: 250,
                   },
                   {
                     accessorFn: (row) => row.lastName,
@@ -62,8 +60,8 @@ const App = () => {
             [],
           )}
           data={data}
-          enableColumnResizing
           headerIsSticky
+          enableColumnResizing
         />
       </Box>
     </Box>

@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { memo, useCallback } from "react";
 import isEqual from "react-fast-compare";
 
@@ -22,27 +22,24 @@ export interface ResizeHandleProps {
  */
 export const ResizeHandle = memo<ResizeHandleProps>(
   ({ className = "", isResizing, onResetSize, onResize, ...props }) => (
-    <Box
-      background="rgba(0,0,0,0.1)"
-      borderRadius="3px"
+    <Flex
       cursor="col-resize"
-      height="calc(100% - 1rem)"
-      marginX={3}
-      marginY={2}
+      height="full"
       opacity={0}
+      paddingY={3.5}
       position="absolute"
-      right={0}
+      right="-4px"
       top={0}
-      transform="translate3d(0px, 0.05rem, 0px)"
-      transition="background 0.15s ease-out, opacity 0.15s ease-out"
-      userSelect="none"
-      width="3px"
+      transition="opacity 0.15s ease-out"
+      width="8px"
       sx={{
         touchAction: "none",
       }}
       _grabbed={{
-        background: "blue.400",
         opacity: "1 !important",
+        "> div": {
+          background: "blue.400",
+        },
       }}
       _hover={{
         opacity: "1 !important",
@@ -53,7 +50,15 @@ export const ResizeHandle = memo<ResizeHandleProps>(
       {...props}
       className={"fn-datatable-resize-handle " + className}
       {...(isResizing && { ["data-grabbed"]: true })}
-    />
+    >
+      <Box
+        background="rgba(0,0,0,0.1)"
+        borderRadius="3px"
+        height="full"
+        transition="background 0.15s ease-out"
+        width="3px"
+      />
+    </Flex>
   ),
   isEqual,
 );

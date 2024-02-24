@@ -27,46 +27,46 @@ export interface DataTableProps<TData>
  * > A React component for displaying large amounts of tabular data.
  */
 export const DataTable = <TData extends RowData>({
-  enableColumnResizing = false,
   headerIsSticky = false,
   ...props
 }: DataTableProps<TData>) => {
   const table = useReactTable({
+    enableColumnResizing: false,
     ...props,
-    enableColumnResizing,
     getCoreRowModel: getCoreRowModel(),
   });
 
-  console.log(table.getState());
+  const cssVars = useMemo(() => {
+    const tableHeadHeight = getMaxHeadersDepth(table.getHeaderGroups()) * 48;
+    const tableBodyHeight = props.data.length * 48;
+    const tableHeight = tableHeadHeight + tableBodyHeight;
 
-  const cssVars = useMemo(
-    () =>
-      table.getAllFlatColumns().reduce(
-        (vars, column) => {
-          const columnId = column.id.toLowerCase();
-          const columnSize = getColumnSize(column, column.getCanResize());
+    return table.getAllFlatColumns().reduce(
+      (vars, column) => {
+        const columnId = column.id.toLowerCase();
+        const columnSize = getColumnSize(column);
 
-          vars[`--fn-datatable-column-${columnId}-width`] = columnSize;
+        vars[`--fn-datatable-column-${columnId}-width`] = columnSize;
 
-          if (isUndefined(column.parent)) {
-            vars[`--fn-datatable-width`] = vars[`--fn-datatable-width`] + columnSize;
-          }
+        if (isUndefined(column.parent)) {
+          vars[`--fn-datatable-width`] = vars[`--fn-datatable-width`] + columnSize;
+        }
 
-          return vars;
-        },
-        {
-          "--fn-datatable-height":
-            getMaxHeadersDepth(table.getHeaderGroups()) + props.data.length * 48,
-          "--fn-datatable-width": 0,
-        } as Record<string, number>,
-      ),
-    [
-      props.data,
-      table.getAllFlatColumns(),
-      table.getHeaderGroups(),
-      table.getState().columnSizing,
-    ],
-  );
+        return vars;
+      },
+      {
+        "--fn-datatable-height": tableHeight,
+        "--fn-datatable-width": 0,
+        "--fn-datatable-head-height": tableHeadHeight,
+        "--fn-datatable-body-height": tableBodyHeight,
+      } as Record<string, number>,
+    );
+  }, [
+    props.data,
+    table.getAllFlatColumns(),
+    table.getHeaderGroups(),
+    table.getState().columnSizing,
+  ]);
 
   return (
     <Flex
@@ -86,7 +86,7 @@ export const DataTable = <TData extends RowData>({
       <Flex
         flexDirection="column"
         flexGrow={1}
-        height="var(--fn-datatable-height)px"
+        height="calc(var(--fn-datatable-height) * 1px)"
         overflowX="auto"
         position="relative"
       >
@@ -98,16 +98,14 @@ export const DataTable = <TData extends RowData>({
                   <TableHeader
                     header={header}
                     key={header.id}
-                    resizingIsEnabled={
-                      enableColumnResizing && header.column.getCanResize() !== false
-                    }
+                    resizingIsEnabled={header.column.getCanResize()}
                   >
                     {!header.isPlaceholder && (
                       <span>
                         {flexRender(header.column.columnDef.header, header.getContext())}
                       </span>
                     )}
-                    {enableColumnResizing && header.column.getCanResize() !== false && (
+                    {header.column.getCanResize() && (
                       <ResizeHandle
                         isResizing={header.column.getIsResizing()}
                         onResetSize={header.column.resetSize}
@@ -126,7 +124,7 @@ export const DataTable = <TData extends RowData>({
                   <TableCell
                     cell={cell}
                     key={cell.id}
-                    resizingIsEnabled={enableColumnResizing}
+                    resizingIsEnabled={cell.column.getCanResize()}
                   />
                 ))}
               </TableRow>

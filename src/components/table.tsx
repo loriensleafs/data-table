@@ -137,6 +137,7 @@ export const TableHeader = memo<TableHeaderProps>(
   ({ children, className = "", header, resizingIsEnabled = false, ...props }) => {
     const width = useMemo(() => {
       const { maxSize, minSize } = header.column.columnDef;
+
       return {
         maxWidth:
           isNumber(maxSize) && maxSize != 9007199254740991
@@ -161,13 +162,10 @@ export const TableHeader = memo<TableHeaderProps>(
         fontSize="xs"
         fontWeight="bold"
         height={12}
-        justifyContent="center"
+        justifyContent={resizingIsEnabled ? "center" : "flex-start"}
         letterSpacing="wider"
         lineHeight={4}
-        paddingLeft={6}
-        paddingRight={
-          resizingIsEnabled ? "calc(var(--chakra-space-6) + var(--chakra-space-4))" : 6
-        }
+        paddingX={6}
         position="relative"
         textAlign="start"
         textTransform="uppercase"
@@ -256,10 +254,7 @@ export const TableCell = memo<TableCellProps>(
       justifyContent="flex-start"
       lineHeight={5}
       overflow="hidden"
-      paddingLeft={
-        resizingIsEnabled ? "calc(var(--chakra-space-6) + var(--chakra-space-4))" : 6
-      }
-      paddingRight={6}
+      paddingX={6}
       textAlign="start"
       width={`calc(var(--fn-datatable-column-${cell.column.id.toLowerCase()}-width) * 1px)`}
       isTruncated
